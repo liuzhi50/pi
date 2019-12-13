@@ -6,17 +6,16 @@ import serial
 import pygame
 pygame.init()
 pygame.mixer.init()
-file = r'/home/pi/plant.mp3'
+file = r'/home/pi/plant.mp3'//MP3音频文件地址
 
-ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)  # open named port at 9600,1s timeot
-pygame.mixer.music.load(file)
-pygame.mixer.music.play(-1)
-C = int(0)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)  # open named port at 9600,1s timeot//打开串口
+pygame.mixer.music.load(file)//加载音频
+pygame.mixer.music.play(-1)//音频无限循环播放
 
 while (1):
-        recv = ser.readline()
+        recv = ser.readline()//读取串口数据
         recv = int(recv)
-        if 0 < recv < 200:
+        if 0 < recv < 200://将串口数据0-200 映射到 0-1
             X = recv
 
             Xmin = 0
@@ -24,8 +23,8 @@ while (1):
             a = 0
             b = 1
             Y = a + (b - a) / (Xmax - Xmin) * (X - Xmin)
-            Y = float(Y)
-            pygame.mixer.music.set_volume(Y)
+            Y = float(Y)//映射完成的串口数据
+            pygame.mixer.music.set_volume(Y)//将映射完成的串口数据调整音量大小
 
             print(Y)
 
