@@ -1,0 +1,36 @@
+# noinspection PyUnresolvedReferences
+from __future__ import division
+
+import time
+import serial
+import pygame
+pygame.init()
+pygame.mixer.init()
+file = r'/home/pi/plant.mp3'
+
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)  # open named port at 9600,1s timeot
+pygame.mixer.music.load(file)
+pygame.mixer.music.play(-1)
+C = int(0)
+
+while (1):
+        recv = ser.readline()
+        recv = int(recv)
+        if 0 < recv < 200:
+            X = recv
+
+            Xmin = 0
+            Xmax = 200
+            a = 0
+            b = 1
+            Y = a + (b - a) / (Xmax - Xmin) * (X - Xmin)
+            Y = float(Y)
+            pygame.mixer.music.set_volume(Y)
+
+            print(Y)
+
+        else:
+            pass
+
+
+
